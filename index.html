@@ -53,7 +53,11 @@
         background-image: linear-gradient(to right, pink, purple);  
     }
     h3{
-        color: white;
+        color: rgb(255, 255, 255);
+        margin-top: 55px;
+    }
+    .padding{   
+        margin-top: 0;
     }
     .h1{
         margin-bottom: 30px;
@@ -68,7 +72,7 @@
         background: orange;
         padding: 10px;
     }
-    #play-again {
+    button {
         display: none;
         margin-top: 20px;
         padding: 10px 15px;
@@ -102,6 +106,7 @@
         <div id="gallery"></div>
         <div id="odpovede"></div>
         <button id="play-again">Hraj znova</button>
+        <button id="next-round">Ďaľšie kolo</button>
 
         <h3>
             napíš mi do správy, či všetko frčalo <br>
@@ -118,7 +123,7 @@ var names = ["Holandsko", "Česko", "Ukrajina", "Slovensko", "Nemecko", "Čína"
 var counter = document.querySelector('#counter'); 
 var availableIndexes = Array.from({length: fotky.length}, (_, i) => i); // Vytvori pole indexov 0, 1, ..., fotky.length - 1
 var countNum = 0;
-
+var note = document.querySelector("h3")
 // Funkcia na náhodný výber jedného prvku z pola
 function getRandomItem(array) {
     return array[Math.floor(Math.random() * array.length)];
@@ -199,9 +204,16 @@ function handleClick(event) {
     odpovede.forEach(function(p) {
         p.removeEventListener("click", handleClick);
     });
-    document.getElementById("play-again").style.display = "block";
+    document.getElementById("next-round").style.display = "block";
+    note.classList.add("padding");
 }
 
+document.getElementById("next-round").addEventListener("click", function() {
+
+    document.getElementById("next-round").style.display = "none";
+    note.classList.remove("padding");
+    resetGame();
+});
 document.getElementById("play-again").addEventListener("click", function() {
     document.getElementById("play-again").style.display = "none";
     resetGame();
