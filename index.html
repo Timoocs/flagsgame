@@ -114,29 +114,27 @@ function getRandomItem(array) {
 function resetGame(){
     var galleryDiv = document.getElementById("gallery");
     var odpovedeDiv = document.getElementById("odpovede");
-    // Vymažeme predchádzajúcu fotku a odpovede
     galleryDiv.innerHTML = "";
     odpovedeDiv.innerHTML = "";
 
-    // Získame náhodnú fotku a jej názov
+    
     var selectedFoto = getRandomItem(fotky);
-    var selectedName = selectedFoto.split(".png")[0]; // Odstránenie prípony z názvu fotky
+    var selectedName = selectedFoto.split(".png")[0]; 
 
-    // Vytvoríme <img> element pre vybranú fotku
+
     var img = document.createElement("img");
     img.src = selectedFoto;
     img.alt = selectedFoto;
     galleryDiv.appendChild(img);
 
-    // Zvyšné názvy (vrátane vybraného) sa premiešajú a odstránia sa duplikáty
-    var shuffledNames = names.slice(); // klonovanie poľa
+
+    var shuffledNames = names.slice(); 
     shuffledNames = shuffledNames.filter(function(item) {
         return item !== selectedName;
     });
 
     shuffledNames.sort(() => Math.random() - 0.5);
 
-    // Vyberieme náhodné 3 názvy
     var randomNames = [];
     while (randomNames.length < 3) {
         var randomName = getRandomItem(shuffledNames);
@@ -146,13 +144,13 @@ function resetGame(){
         });
     }
 
-    // Pridáme vybraný názov späť do zoznamu
+    
     randomNames.push(selectedName);
 
-    // Náhodne premiešame všetky názvy
+   
     randomNames.sort(() => Math.random() - 0.5);
 
-    // Vytvoríme <p> elementy pre názvy a pridáme ich do kontajneru pre názvy
+ 
     randomNames.forEach(function(name) {
         var p = document.createElement("p");
         p.textContent = name;
@@ -169,7 +167,7 @@ function handleClick(event) {
     } else {
         event.target.classList.add("incorrect");
     }
-    // Získame všetky prvky <p> a odstránime event listenery
+
     var odpovede = document.querySelectorAll("p");
     odpovede.forEach(function(p) {
         p.removeEventListener("click", handleClick);
