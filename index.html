@@ -60,7 +60,7 @@
         color: white;
         font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
         font-weight: bold;
-        font-size: 2    0px;
+        font-size: 20px;    
     }
     h2.active{
         text-align: center  ;
@@ -80,6 +80,14 @@
         cursor: pointer;
         width: 100%;
         text-align: center;
+        height: 35px;
+    }
+    #counter{
+        margin: 20px 0;
+        color: white;
+        font-weight: bold;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 30px;
     }
 </style>
 </head>
@@ -89,6 +97,7 @@
     <article>
         <div class="h1">UHÁDNI VLAJKU by timo
         </div>
+        <div id="counter">Skóre : 0/25</div>
 
         <div id="gallery"></div>
         <div id="odpovede"></div>
@@ -103,13 +112,18 @@
 </section>
 <script>
 // Zoznam vašich fotiek a názvov
-var fotky = ["Holandsko.png", "Česko.png", "Ukrajina.png", "Slovensko.png", "Nemecko.png", "Čína.png", "Maďarsko.png", "Kanada.png", "Fínsko.png", "Švédsko.png", "Nórsko.png", "Španielsko.png", "Portugalsko.png", "Srbsko.png", "Taliansko.png",  "Rakúsko.png", "Francúzsko.png", "Rusko.png", "Japonsko.png"];
-var names = ["Holandsko", "Česko", "Ukrajina", "Slovensko", "Nemecko", "Čína", "Maďarsko", "Kanada", "Fínsko", "Švédsko", "Nórsko", "Španielsko", "Portugalsko", "Srbsko", "Taliansko", "Rakúsko", "Francúzsko", "Rusko", "Japonsko"];
+var fotky = ["Holandsko.png", "Česko.png", "Ukrajina.png", "Slovensko.png", "Nemecko.png", "Čína.png", "Maďarsko.png", "Kanada.png", "Fínsko.png", "Švédsko.png", "Nórsko.png", "Španielsko.png", "Portugalsko.png", "Srbsko.png", "Taliansko.png",  "Rakúsko.png", "Francúzsko.png", "Rusko.png", "Japonsko.png", "Albánsko.png", "Bulhársko.png", "Čierna Hora.png", "Grécko.png", "Chorvátsko.png", "Poľsko.png"];
+var names = ["Holandsko", "Česko", "Ukrajina", "Slovensko", "Nemecko", "Čína", "Maďarsko", "Kanada", "Fínsko", "Švédsko", "Nórsko", "Španielsko", "Portugalsko", "Srbsko", "Taliansko", "Rakúsko", "Francúzsko", "Rusko", "Japonsko", "Albánsko", "Bulhársko", "Čierna Hora", "Grécko", "Chorvátsko", "Poľsko"];
+
+var counter = document.querySelector('#counter'); 
+var availableIndexes = Array.from({length: fotky.length}, (_, i) => i); // Vytvori pole indexov 0, 1, ..., fotky.length - 1
 
 // Funkcia na náhodný výber jedného prvku z pola
 function getRandomItem(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
+
+var countNum = 0;
 
 function resetGame(){
     var galleryDiv = document.getElementById("gallery");
@@ -117,16 +131,20 @@ function resetGame(){
     galleryDiv.innerHTML = "";
     odpovedeDiv.innerHTML = "";
 
+    if (availableIndexes.length === 0) {
+        // Ak sme vyčerpali všetky vlajky, zobrazíme alert s výhodnotením
+        alert("Hra skončila! Tvoje skóre: " + countNum + "/25");
+        return;
+    }
     
-    var selectedFoto = getRandomItem(fotky);
-    var selectedName = selectedFoto.split(".png")[0]; 
-
+    var randomIndex = availableIndexes[Math.floor(Math.random() * availableIndexes.length)]; // Vyberieme náhodný index z dostupných
+    var selectedFoto = fotky[randomIndex];
+    var selectedName = selectedFoto.split(".png")[0];
 
     var img = document.createElement("img");
     img.src = selectedFoto;
     img.alt = selectedFoto;
     galleryDiv.appendChild(img);
-
 
     var shuffledNames = names.slice(); 
     shuffledNames = shuffledNames.filter(function(item) {
@@ -144,19 +162,18 @@ function resetGame(){
         });
     }
 
-    
     randomNames.push(selectedName);
 
-   
     randomNames.sort(() => Math.random() - 0.5);
 
- 
     randomNames.forEach(function(name) {
         var p = document.createElement("p");
         p.textContent = name;
         p.addEventListener("click", handleClick);
         odpovedeDiv.appendChild(p);
     });
+
+    availableIndexes = availableIndexes.filter(index => index !== randomIndex); // removal index
 }
 
 function handleClick(event) {
@@ -164,10 +181,13 @@ function handleClick(event) {
     var selectedName = document.querySelector("#gallery img").alt.split(".")[0];
     if (name === selectedName) {
         event.target.classList.add("correct");
+        countNum++;
+        var countText = 'Skóre : '
+        var lastText = '/25'
+        counter.textContent = countText + countNum + lastText;
     } else {
         event.target.classList.add("incorrect");
     }
-
     var odpovede = document.querySelectorAll("p");
     odpovede.forEach(function(p) {
         p.removeEventListener("click", handleClick);
