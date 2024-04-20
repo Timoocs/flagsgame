@@ -117,13 +117,12 @@ var names = ["Holandsko", "Česko", "Ukrajina", "Slovensko", "Nemecko", "Čína"
 
 var counter = document.querySelector('#counter'); 
 var availableIndexes = Array.from({length: fotky.length}, (_, i) => i); // Vytvori pole indexov 0, 1, ..., fotky.length - 1
+var countNum = 0;
 
 // Funkcia na náhodný výber jedného prvku z pola
 function getRandomItem(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
-
-var countNum = 0;
 
 function resetGame(){
     var galleryDiv = document.getElementById("gallery");
@@ -134,7 +133,15 @@ function resetGame(){
     if (availableIndexes.length === 0) {
         // Ak sme vyčerpali všetky vlajky, zobrazíme alert s výhodnotením
         alert("Hra skončila! Tvoje skóre: " + countNum + "/25");
+        document.getElementById("play-again").style.display = "block";
+        availableIndexes = Array.from({length: fotky.length}, (_, i) => i); // Zresetujeme dostupné indexy
+        counter.textContent = countNum; // Aktualizujeme zobrazenie skóre
+        countNum = 0; // Resetujeme skóre
         return;
+    }
+    if (availableIndexes.length === 25){
+        countNum = 0
+        counter.textContent = countNum
     }
     
     var randomIndex = availableIndexes[Math.floor(Math.random() * availableIndexes.length)]; // Vyberieme náhodný index z dostupných
@@ -145,6 +152,8 @@ function resetGame(){
     img.src = selectedFoto;
     img.alt = selectedFoto;
     galleryDiv.appendChild(img);
+
+    availableIndexes = availableIndexes.filter(index => index !== randomIndex); // Odstranime pouzity index
 
     var shuffledNames = names.slice(); 
     shuffledNames = shuffledNames.filter(function(item) {
@@ -172,8 +181,6 @@ function resetGame(){
         p.addEventListener("click", handleClick);
         odpovedeDiv.appendChild(p);
     });
-
-    availableIndexes = availableIndexes.filter(index => index !== randomIndex); // removal index
 }
 
 function handleClick(event) {
