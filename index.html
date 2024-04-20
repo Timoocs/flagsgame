@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Names</title>
+
+<style>
+    img{
+        height: 150px;
+        text-align: center;
+    }
+    .gallery{
+        text-align: center;
+    }
+    section{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        
+    }
+    p{
+        padding: 25px;
+        background: rgb(255, 63, 137);
+        font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        border-radius: 10px;
+        cursor: pointer; /* Zmení kurzor na ruku pri prechode ponad p */
+    }
+    .correct {
+        background-color: green; /* Zmení farbu pozadia správneho p */
+    }
+    .incorrect {
+        background-color: red; /* Zmení farbu pozadia správneho p */
+    }
+    p:hover{
+        border: 3px solid white;
+        padding: 22px;
+    }
+    article{
+        background: rgb(223, 179, 255);
+        border: 5px solid rgb(255, 0, 98);
+        padding: 50px 5vw 10px ;
+        border-radius: 30px;
+        width: clamp(300px, 70vh, 350px);
+        text-align: center;
+    }
+    body{
+        margin: 0;
+        background-image: linear-gradient(to right, pink, purple);  
+    }
+    h3{
+        color: white;
+    }
+    .h1{
+        margin-bottom: 30px;
+        color: white;
+        font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-weight: bold;
+        font-size: 2    0px;
+    }
+    h2.active{
+        text-align: center  ;
+        color: white;
+        background: orange;
+        padding: 10px;
+    }
+    #play-again {
+        display: none;
+        margin-top: 20px;
+        padding: 10px 15px;
+        background-color: #4CAF50;
+        text-align: center;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+ 
+<section>
+    <article>
+        <div class="h1">UHÁDNI VLAJKU by timo
+        </div>
+
+        <div id="gallery"></div>
+        <div id="odpovede"></div>
+        <button id="play-again">Hraj znova</button>
+
+        <h3>
+            napíš mi do správy, či všetko frčalo <br>
+            <b>diky</b>
+        </h3>
+
+    </article>
+</section>
+<script>
+// Zoznam vašich fotiek a názvov
+var fotky = ["Holandsko.png", "Česko.png", "Ukrajina.png", "Slovensko.png", "Nemecko.png", "Čína.png", "Maďarsko.png", "Kanada.png", "Fínsko.png", "Švédsko.png", "Nórsko.png", "Španielsko.png", "Portugalsko.png", "Srbsko.png", "Taliansko.png",  "Rakúsko.png", "Francúzsko.png"];
+var names = ["Holandsko", "Česko", "Ukrajina", "Slovensko", "Nemecko", "Čína", "Maďarsko", "Kanada", "Fínsko", "Švédsko", "Nórsko", "Španielsko", "Portugalsko", "Srbsko", "Taliansko", "Rakúsko", "Francúzsko"];
+
+// Funkcia na náhodný výber jedného prvku z pola
+function getRandomItem(array) {
+    return array[Math.floor(Math.random() * array.length)];
+}
+
+function resetGame(){
+    var galleryDiv = document.getElementById("gallery");
+    var odpovedeDiv = document.getElementById("odpovede");
+    // Vymažeme predchádzajúcu fotku a odpovede
+    galleryDiv.innerHTML = "";
+    odpovedeDiv.innerHTML = "";
+
+    // Získame náhodnú fotku a jej názov
+    var selectedFoto = getRandomItem(fotky);
+    var selectedName = selectedFoto.split(".png")[0]; // Odstránenie prípony z názvu fotky
+
+    // Vytvoríme <img> element pre vybranú fotku
+    var img = document.createElement("img");
+    img.src = selectedFoto;
+    img.alt = selectedFoto;
+    galleryDiv.appendChild(img);
+
+    // Zvyšné názvy (vrátane vybraného) sa premiešajú a odstránia sa duplikáty
+    var shuffledNames = names.slice(); // klonovanie poľa
+    shuffledNames = shuffledNames.filter(function(item) {
+        return item !== selectedName;
+    });
+
+    shuffledNames.sort(() => Math.random() - 0.5);
+
+    // Vyberieme náhodné 3 názvy
+    var randomNames = [];
+    while (randomNames.length < 3) {
+        var randomName = getRandomItem(shuffledNames);
+        randomNames.push(randomName);
+        shuffledNames = shuffledNames.filter(function(item) {
+            return item !== randomName;
+        });
+    }
+
+    // Pridáme vybraný názov späť do zoznamu
+    randomNames.push(selectedName);
+
+    // Náhodne premiešame všetky názvy
+    randomNames.sort(() => Math.random() - 0.5);
+
+    // Vytvoríme <p> elementy pre názvy a pridáme ich do kontajneru pre názvy
+    randomNames.forEach(function(name) {
+        var p = document.createElement("p");
+        p.textContent = name;
+        p.addEventListener("click", handleClick);
+        odpovedeDiv.appendChild(p);
+    });
+}
+
+function handleClick(event) {
+    var name = event.target.textContent;
+    var selectedName = document.querySelector("#gallery img").alt.split(".")[0];
+    if (name === selectedName) {
+        event.target.classList.add("correct");
+    } else {
+        event.target.classList.add("incorrect");
+    }
+    // Získame všetky prvky <p> a odstránime event listenery
+    var odpovede = document.querySelectorAll("p");
+    odpovede.forEach(function(p) {
+        p.removeEventListener("click", handleClick);
+    });
+    document.getElementById("play-again").style.display = "block";
+}
+
+document.getElementById("play-again").addEventListener("click", function() {
+    document.getElementById("play-again").style.display = "none";
+    resetGame();
+});
+
+resetGame();
+</script>
+
+</body>
+</html>
