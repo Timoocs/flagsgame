@@ -19,17 +19,27 @@
             font-weight: bold;
             
         }
-        h1{
-
+        .choose{
+            font-size: 30px;
+            margin: 0
         }
         #modes{
-            padding: 10px 15px;
             background: rgb(255, 63, 137);
             width: 30%;
             border-radius: 10px;
-            margin: 20px auto;
             font-size: 20px;
-            
+            padding:  10px 20px;
+        }
+        .container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+        #timemode{
+            background: rgb(255, 180, 30);
+            padding:  10px 20px;
+            border-radius: 10px;
         }
         a{
             text-decoration: none;
@@ -42,27 +52,35 @@
             border-radius: 30px;
             width: 250px;
             margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
     </style>
     <section>
         <h1>
-            UHÁDNI VLAJKU BY timoo.irl
+            UHÁDNI VLAJKU by timoo.irl
         </h1>
         <article>
-            <h2>
+            <h2 class="choose">
                 Vyber si mód
             </h2>
-            <div id="modes"><a href="europe.html">
-                Európa
-            </a>
+            <div class="note">(2 módy : klasický a s časovačom, kde máte 5s na odpoveď)</div>
+            <div class="container">
+                <div id="modes" function><a href="europe.html">Európa</a></div>
+                <div id="timemode" function><a href="t-europe.html">⏳</a></div>
             </div>
-            <div id="modes"><a href="africa.html">
-                Afrika
-                </a>
+            <div class="container">
+                <div id="modes" function><a href="africa.html">Afrika</a></div>
+                <div id="timemode" function><a href="t-africa.html">⏳</a></div>
             </div>
-            <div id="modes"><a href="asia.html">
-                Ázia
-                </a>
+            <div class="container">
+                <div id="modes" function><a href="asia.html">Ázia</a></div>
+                <div id="timemode" function><a href="t-asia.html">⏳</a></div>
+            </div>
+
+            <br>
+            <br>
         </article>
     </section>
 </body>
