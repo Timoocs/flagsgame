@@ -52,6 +52,7 @@ h3{
 .padding{   
     margin-top: 15px;
 }
+
 .h1{
     margin-bottom: 5px;
     color: white;
@@ -102,4 +103,10 @@ a{
     color: white;
     text-decoration: none;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.timer{
+    margin-bottom: 15px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 15px;
 }
