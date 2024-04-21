@@ -1,8 +1,8 @@
 var counter = document.querySelector('#counter'); 
 var round = document.querySelector('#round'); 
+var article = document.querySelector('article')
 var availableIndexes = Array.from({length: fotky.length}, (_, i) => i); // Vytvori pole indexov 0, 1, ..., fotky.length - 1
 var countNum = 0;
-var note = document.querySelector("h3")
 var countText = 'Skóre : '
 var lastText = '/25'
 var countOfRound = 1;
@@ -94,13 +94,12 @@ function handleClick(event) {
         p.removeEventListener("click", handleClick);
     });
     document.getElementById("next-round").style.display = "block";
-    note.classList.add("padding");
+    article.classList.add('padding')
 }
 
 document.getElementById("next-round").addEventListener("click", function() {
-
+    article.classList.remove('padding')
     document.getElementById("next-round").style.display = "none";
-    note.classList.remove("padding");
     countOfRound++;
     round.textContent = countOfRound + " Kolo";
     

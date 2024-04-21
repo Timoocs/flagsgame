@@ -2,7 +2,7 @@ var counter = document.querySelector('#counter');
 var round = document.querySelector('#round'); 
 var availableIndexes = Array.from({length: fotky.length}, (_, i) => i);
 var countNum = 0;
-var note = document.querySelector("h3")
+var article = document.querySelector("article")
 var countText = 'Skóre : '
 var lastText = '/25'
 var countOfRound = 1;
@@ -133,14 +133,14 @@ function handleClick(event) {
         p.removeEventListener("click", handleClick);
     });
     document.getElementById("next-round").style.display = "block";
-    note.classList.add("padding");
+    article.classList.add("padding");
 }
 
 document.getElementById("next-round").addEventListener("click", function() {
     clearTimeout(roundTimer); // Resetujeme časovač po kliknutí na ďalšie kolo
     clearInterval(remainingTime); // Zrušíme časovač po kliknutí na ďalšie kolo
     document.getElementById("next-round").style.display = "none";
-    note.classList.remove("padding");
+    article.classList.remove("padding");
     countOfRound++;
     round.textContent = countOfRound + " Kolo";
     resetGame();
